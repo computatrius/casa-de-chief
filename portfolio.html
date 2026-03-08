@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Portfolio — CS Student</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --black: #050505;
+      --white: #f7f5f0;
+      --gray-1: #111;
+      --gray-2: #1c1c1c;
+      --gray-3: #2e2e2e;
+      --gray-4: #555;
+      --gray-5: #888;
+      --gray-6: #bbb;
+      --serif: 'Playfair Display', Georgia, serif;
+      --mono: 'IBM Plex Mono', monospace;
+      --sans: 'IBM Plex Sans', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: var(--sans);
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* GRAIN */
+    body::after {
+      content: ''; position: fixed; inset: 0; z-index: 1000; opacity: .04; pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.4rem 3.5rem;
+      background: rgba(5,5,5,.92);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--gray-2);
+    }
+    .nav-logo { font-family: var(--mono); font-size: .72rem; color: var(--white); letter-spacing: .18em; text-transform: uppercase; }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a { font-family: var(--mono); font-size: .68rem; color: var(--gray-5); text-decoration: none; letter-spacing: .12em; text-transform: uppercase; }
+    .nav-links a:hover { color: var(--white); }
+
+    .container { max-width: 1080px; margin: 0 auto; padding: 0 3rem; }
+
+    /* HERO */
+    #hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-rows: 1fr auto;
+      padding-top: 6rem;
+      border-bottom: 1px solid var(--gray-3);
+    }
+    .hero-inner {
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 0 3rem 4rem; max-width: 1080px; margin: 0 auto; width: 100%;
+    }
+    .hero-eyebrow {
+      font-family: var(--mono); font-size: .68rem; color: var(--gray-5);
+      letter-spacing: .25em; text-transform: uppercase; margin-bottom: 1.5rem;
+      display: flex; align-items: center; gap: 1rem;
+    }
+    .hero-eyebrow::before { content: ''; display: block; width: 32px; height: 1px; background: var(--gray-5); }
+    .hero-name {
+      font-family: var(--serif); font-size: clamp(4.5rem, 10vw, 9rem);
+      font-weight: 900; line-height: .92; letter-spacing: -.03em; margin-bottom: .5rem;
+    }
+    .hero-name em { font-style: italic; color: var(--gray-4); display: block; }
+    .hero-bottom {
+      display: flex; justify-content: space-between; align-items: flex-end;
+      padding: 2rem 3rem 3rem; max-width: 1080px; margin: 0 auto; width: 100%;
+      border-top: 1px solid var(--gray-3);
+    }
+    .hero-desc { font-size: .95rem; color: var(--gray-5); max-width: 380px; line-height: 1.8; }
+    .hero-cta { display: flex; gap: 1rem; }
+
+    .btn { font-family: var(--mono); font-size: .68rem; letter-spacing: .12em; text-transform: uppercase; padding: .8rem 2rem; text-decoration: none; }
+    .btn-primary { background: var(--white); color: var(--black); border: 1px solid var(--white); }
+    .btn-primary:hover { background: transparent; color: var(--white); }
+    .btn-ghost { background: transparent; color: var(--gray-5); border: 1px solid var(--gray-3); }
+    .btn-ghost:hover { border-color: var(--white); color: var(--white); }
+
+    /* DIVIDER BAND */
+    .band {
+      border-top: 1px solid var(--gray-3); border-bottom: 1px solid var(--gray-3);
+      padding: .85rem 3rem;
+      background: var(--gray-1);
+      display: flex; gap: 2.5rem; overflow: hidden;
+    }
+    .band-item { font-family: var(--mono); font-size: .63rem; color: var(--gray-4); letter-spacing: .2em; text-transform: uppercase; white-space: nowrap; }
+
+    /* ABOUT */
+    #about { padding: 8rem 0; border-bottom: 1px solid var(--gray-3); }
+    .section-num { font-family: var(--mono); font-size: .62rem; color: var(--gray-4); letter-spacing: .2em; margin-bottom: 4rem; display: flex; align-items: center; gap: 1rem; }
+    .section-num::after { content: ''; flex: 1; height: 1px; background: var(--gray-3); max-width: 80px; }
+    .about-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: start; }
+    .about-heading { font-family: var(--serif); font-size: clamp(2.5rem, 4vw, 3.8rem); font-weight: 700; line-height: 1.1; margin-bottom: 2rem; }
+    .about-heading em { font-style: italic; color: var(--gray-4); }
+    .about-text p { color: var(--gray-5); font-size: .95rem; margin-bottom: 1.2rem; line-height: 1.9; }
+    .skills-title { font-family: var(--mono); font-size: .62rem; color: var(--gray-4); letter-spacing: .2em; text-transform: uppercase; margin-bottom: 1.5rem; }
+    .skills-list { list-style: none; }
+    .skills-list li {
+      font-family: var(--mono); font-size: .78rem; color: var(--gray-5);
+      padding: .85rem 0; border-bottom: 1px solid var(--gray-2);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .skills-list li:hover { color: var(--white); }
+    .skills-list li::after { content: '→'; color: var(--gray-3); font-size: .7rem; }
+
+    /* PROJECTS */
+    #projects { padding: 8rem 0; border-bottom: 1px solid var(--gray-3); }
+    .projects-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 4rem; }
+    .section-heading { font-family: var(--serif); font-size: clamp(2.2rem, 3.5vw, 3.2rem); font-weight: 700; line-height: 1.1; }
+    .section-heading em { font-style: italic; color: var(--gray-4); }
+
+    .project-row {
+      display: grid; grid-template-columns: 80px 1fr auto; gap: 2.5rem;
+      align-items: start; padding: 2.5rem 0;
+      border-top: 1px solid var(--gray-2);
+    }
+    .project-row:last-child { border-bottom: 1px solid var(--gray-2); }
+    .project-row:hover { background: var(--gray-1); margin: 0 -2rem; padding-left: 2rem; padding-right: 2rem; }
+    .project-row-num { font-family: var(--mono); font-size: .62rem; color: var(--gray-4); letter-spacing: .15em; padding-top: .2rem; }
+    .project-row-title { font-family: var(--serif); font-size: 1.4rem; font-weight: 700; color: var(--gray-6); margin-bottom: .5rem; }
+    .project-row:hover .project-row-title { color: var(--white); }
+    .project-row-desc { font-size: .88rem; color: var(--gray-4); line-height: 1.7; max-width: 560px; margin-bottom: 1rem; }
+    .project-row-tags { display: flex; flex-wrap: wrap; gap: .4rem; }
+    .tag { font-family: var(--mono); font-size: .58rem; padding: .2rem .7rem; border: 1px solid var(--gray-3); color: var(--gray-4); letter-spacing: .06em; }
+    .project-row-links { display: flex; flex-direction: column; gap: .6rem; padding-top: .2rem; }
+    .project-link { font-family: var(--mono); font-size: .62rem; color: var(--gray-4); text-decoration: none; letter-spacing: .1em; text-transform: uppercase; white-space: nowrap; }
+    .project-link:hover { color: var(--white); }
+
+    /* EDUCATION */
+    #education { padding: 8rem 0; border-bottom: 1px solid var(--gray-3); }
+    .edu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--gray-2); border: 1px solid var(--gray-2); margin-top: 4rem; }
+    .edu-card { background: var(--black); padding: 2.5rem; }
+    .edu-card:hover { background: var(--gray-1); }
+    .edu-card-date { font-family: var(--mono); font-size: .62rem; color: var(--gray-4); letter-spacing: .18em; margin-bottom: 1rem; }
+    .edu-card-title { font-family: var(--serif); font-size: 1.2rem; font-weight: 700; margin-bottom: .3rem; }
+    .edu-card-sub { font-size: .82rem; color: var(--gray-5); margin-bottom: 1rem; }
+    .edu-card-desc { font-size: .85rem; color: var(--gray-4); line-height: 1.7; }
+
+    /* CONTACT */
+    #contact { padding: 10rem 0 7rem; }
+    .contact-inner { max-width: 700px; }
+    .contact-big { font-family: var(--serif); font-size: clamp(3rem, 7vw, 6.5rem); font-weight: 900; line-height: .95; letter-spacing: -.03em; margin-bottom: 3rem; }
+    .contact-big em { font-style: italic; color: var(--gray-4); display: block; }
+    .contact-links { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .contact-link { font-family: var(--mono); font-size: .68rem; color: var(--gray-5); text-decoration: none; letter-spacing: .12em; text-transform: uppercase; padding: .75rem 1.5rem; border: 1px solid var(--gray-3); }
+    .contact-link:hover { border-color: var(--white); color: var(--white); }
+
+    /* FOOTER */
+    footer { border-top: 1px solid var(--gray-3); padding: 1.5rem 3rem; display: flex; justify-content: space-between; align-items: center; }
+    footer p, footer span { font-family: var(--mono); font-size: .6rem; color: var(--gray-4); letter-spacing: .1em; }
+
+    /* RESPONSIVE */
+    @media (max-width: 860px) {
+      nav { padding: 1.2rem 1.5rem; }
+      .container, .hero-inner, .hero-bottom { padding-left: 1.5rem; padding-right: 1.5rem; }
+      .hero-bottom { flex-direction: column; align-items: flex-start; gap: 1.5rem; }
+      .about-layout { grid-template-columns: 1fr; gap: 3rem; }
+      .edu-grid { grid-template-columns: 1fr; }
+      .project-row { grid-template-columns: 50px 1fr; }
+      .project-row-links { flex-direction: row; grid-column: 2; }
+      footer { flex-direction: column; gap: .5rem; text-align: center; }
+    }
+    @media (max-width: 560px) {
+      .nav-links { display: none; }
+      .hero-name { font-size: 3.8rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">YN / Portfolio</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<section id="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Computer Science Student · Open to Opportunities</div>
+    <h1 class="hero-name">Your<br><em>Name Here</em></h1>
+  </div>
+  <div class="hero-bottom">
+    <p class="hero-desc">Building things at the intersection of clean code and meaningful impact — from web systems to data pipelines.</p>
+    <div class="hero-cta">
+      <a href="#projects" class="btn btn-primary">View Work</a>
+      <a href="#contact" class="btn btn-ghost">Say Hello</a>
+    </div>
+  </div>
+</section>
+
+<div class="band">
+  <span class="band-item">Python</span>
+  <span class="band-item">JavaScript</span>
+  <span class="band-item">React</span>
+  <span class="band-item">Node.js</span>
+  <span class="band-item">PostgreSQL</span>
+  <span class="band-item">Docker</span>
+  <span class="band-item">Git</span>
+  <span class="band-item">Linux</span>
+  <span class="band-item">REST APIs</span>
+  <span class="band-item">Algorithms</span>
+  <span class="band-item">Data Structures</span>
+</div>
+
+<section id="about">
+  <div class="container">
+    <div class="section-num">01 — About</div>
+    <div class="about-layout">
+      <div>
+        <h2 class="about-heading">Curious<br><em>by nature.</em><br>Precise by habit.</h2>
+        <div class="about-text">
+          <p>Hi — I'm a Computer Science student who believes good software is part logic, part craft. I care deeply about how systems are architected and how they feel to use.</p>
+          <p>From database schemas to UI components, I try to bring the same attention to detail across the whole stack. I learn fastest by building real things and shipping them.</p>
+          <p>Currently in my 3rd year, looking for internship opportunities where I can contribute meaningfully from day one.</p>
+        </div>
+      </div>
+      <div>
+        <div class="skills-title">// Tech Stack</div>
+        <ul class="skills-list">
+          <li>Python</li>
+          <li>JavaScript / TypeScript</li>
+          <li>React &amp; Node.js</li>
+          <li>PostgreSQL / SQL</li>
+          <li>Docker &amp; CI/CD</li>
+          <li>Git &amp; GitHub</li>
+          <li>Linux &amp; CLI</li>
+          <li>Data Structures &amp; Algorithms</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="container">
+    <div class="projects-header">
+      <div>
+        <div class="section-num" style="margin-bottom:1rem">02 — Projects</div>
+        <h2 class="section-heading">Things I've<br><em>Built</em></h2>
+      </div>
+      <a href="https://github.com/yourusername" target="_blank" class="btn btn-ghost">All on GitHub</a>
+    </div>
+
+    <div class="project-row">
+      <div class="project-row-num">01 —</div>
+      <div class="project-row-body">
+        <div class="project-row-title">Project One</div>
+        <p class="project-row-desc">A full-stack web application that solves a real problem. Describe what it does and what made it technically challenging or interesting to build.</p>
+        <div class="project-row-tags"><span class="tag">React</span><span class="tag">Node.js</span><span class="tag">PostgreSQL</span></div>
+      </div>
+      <div class="project-row-links"><a href="#" class="project-link">↗ Demo</a><a href="#" class="project-link">↗ Code</a></div>
+    </div>
+
+    <div class="project-row">
+      <div class="project-row-num">02 —</div>
+      <div class="project-row-body">
+        <div class="project-row-title">Project Two</div>
+        <p class="project-row-desc">A CLI tool or automation script. Explain the problem it solves and what you learned about system design or performance while building it.</p>
+        <div class="project-row-tags"><span class="tag">Python</span><span class="tag">CLI</span><span class="tag">Automation</span></div>
+      </div>
+      <div class="project-row-links"><a href="#" class="project-link">↗ Code</a></div>
+    </div>
+
+    <div class="project-row">
+      <div class="project-row-num">03 —</div>
+      <div class="project-row-body">
+        <div class="project-row-title">Project Three</div>
+        <p class="project-row-desc">A data pipeline, API backend, or infrastructure project. What was the scale? What interesting architectural decisions did you make?</p>
+        <div class="project-row-tags"><span class="tag">FastAPI</span><span class="tag">Docker</span><span class="tag">TimescaleDB</span></div>
+      </div>
+      <div class="project-row-links"><a href="#" class="project-link">↗ Code</a><a href="#" class="project-link">↗ Docs</a></div>
+    </div>
+
+    <div class="project-row">
+      <div class="project-row-num">04 —</div>
+      <div class="project-row-body">
+        <div class="project-row-title">Project Four</div>
+        <p class="project-row-desc">Mobile app, browser extension, or a creative experiment. What was unconventional about it and what new skill did it force you to learn?</p>
+        <div class="project-row-tags"><span class="tag">TypeScript</span><span class="tag">APIs</span></div>
+      </div>
+      <div class="project-row-links"><a href="#" class="project-link">↗ Demo</a><a href="#" class="project-link">↗ Code</a></div>
+    </div>
+
+    <div class="project-row">
+      <div class="project-row-num">05 —</div>
+      <div class="project-row-body">
+        <div class="project-row-title">Open Source Contribution</div>
+        <p class="project-row-desc">A contribution to an open-source project. What did you fix, add, or improve? Link to your PR or commit directly.</p>
+        <div class="project-row-tags"><span class="tag">Open Source</span><span class="tag">Collaboration</span></div>
+      </div>
+      <div class="project-row-links"><a href="#" class="project-link">↗ PR</a></div>
+    </div>
+  </div>
+</section>
+
+<section id="education">
+  <div class="container">
+    <div class="section-num">03 — Education &amp; Experience</div>
+    <h2 class="section-heading" style="margin-top:-1rem">Timeline</h2>
+    <div class="edu-grid">
+      <div class="edu-card">
+        <div class="edu-card-date">2022 — Present</div>
+        <div class="edu-card-title">B.Sc. Computer Science</div>
+        <div class="edu-card-sub">Your University · City, Country</div>
+        <div class="edu-card-desc">Algorithms &amp; Data Structures, Operating Systems, Database Systems, Networks, Software Engineering.</div>
+      </div>
+      <div class="edu-card">
+        <div class="edu-card-date">Summer 2024</div>
+        <div class="edu-card-title">Software Engineering Intern</div>
+        <div class="edu-card-sub">Company Name · City, Country</div>
+        <div class="edu-card-desc">Describe what you built and one measurable outcome from your time at this company.</div>
+      </div>
+      <div class="edu-card">
+        <div class="edu-card-date">2023</div>
+        <div class="edu-card-title">Hackathon — 2nd Place</div>
+        <div class="edu-card-sub">Hackathon Name</div>
+        <div class="edu-card-desc">Built a solution in 24 hours. Learned a lot about shipping under pressure and collaboration.</div>
+      </div>
+      <div class="edu-card">
+        <div class="edu-card-date">2019 — 2022</div>
+        <div class="edu-card-title">High School Diploma</div>
+        <div class="edu-card-sub">Your School · City, Country</div>
+        <div class="edu-card-desc">Focus on Mathematics, Physics, and Computer Studies. Graduated with distinction.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="container">
+    <div class="contact-inner">
+      <div class="section-num">04 — Contact</div>
+      <h2 class="contact-big">Let's<br><em>work together.</em></h2>
+      <div class="contact-links">
+        <a href="mailto:you@email.com" class="contact-link">✉ Email</a>
+        <a href="https://github.com/yourusername" target="_blank" class="contact-link">↗ GitHub</a>
+        <a href="https://linkedin.com/in/yourprofile" target="_blank" class="contact-link">↗ LinkedIn</a>
+        <a href="/resume.pdf" target="_blank" class="contact-link">↓ Résumé</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>Designed &amp; built by Your Name · 2025</p>
+  <span>Open to internships &amp; freelance work</span>
+</footer>
+
+</body>
+</html>
