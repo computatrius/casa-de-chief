@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Post Title — Your Name</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --black: #050505;
+      --white: #f7f5f0;
+      --gray-1: #111;
+      --gray-2: #1c1c1c;
+      --gray-3: #2e2e2e;
+      --gray-4: #555;
+      --gray-5: #888;
+      --gray-6: #bbb;
+      --serif: 'Playfair Display', Georgia, serif;
+      --mono: 'IBM Plex Mono', monospace;
+      --sans: 'IBM Plex Sans', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--black); color: var(--white); font-family: var(--sans); font-weight: 300; line-height: 1.7; overflow-x: hidden; }
+
+    body::after {
+      content: ''; position: fixed; inset: 0; z-index: 1000; opacity: .04; pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.4rem 3.5rem;
+      background: rgba(5,5,5,.92);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--gray-2);
+    }
+    .nav-logo { font-family: var(--mono); font-size: .72rem; color: var(--white); letter-spacing: .18em; text-transform: uppercase; text-decoration: none; }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a { font-family: var(--mono); font-size: .68rem; color: var(--gray-5); text-decoration: none; letter-spacing: .12em; text-transform: uppercase; }
+    .nav-links a:hover, .nav-links a.active { color: var(--white); }
+
+    /* POST LAYOUT */
+    .post-wrap { max-width: 720px; margin: 0 auto; padding: 10rem 3rem 8rem; }
+
+    /* POST HEADER */
+    .post-back {
+      font-family: var(--mono); font-size: .65rem; color: var(--gray-4);
+      letter-spacing: .12em; text-transform: uppercase;
+      text-decoration: none; display: inline-flex; align-items: center; gap: .4rem;
+      margin-bottom: 3rem;
+    }
+    .post-back:hover { color: var(--white); }
+
+    .post-meta-top {
+      display: flex; align-items: center; gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .post-category {
+      font-family: var(--mono); font-size: .6rem; letter-spacing: .15em; text-transform: uppercase;
+      padding: .2rem .75rem; border: 1px solid var(--gray-3); color: var(--gray-4);
+    }
+    .post-date-top { font-family: var(--mono); font-size: .62rem; color: var(--gray-4); letter-spacing: .1em; }
+    .post-readtime { font-family: var(--mono); font-size: .62rem; color: var(--gray-4); letter-spacing: .1em; }
+
+    .post-title {
+      font-family: var(--serif); font-size: clamp(2.2rem, 5vw, 3.5rem);
+      font-weight: 900; line-height: 1.1; letter-spacing: -.02em;
+      margin-bottom: 1.5rem;
+    }
+    .post-subtitle {
+      font-size: 1.1rem; color: var(--gray-5); line-height: 1.7;
+      margin-bottom: 3rem; padding-bottom: 3rem;
+      border-bottom: 1px solid var(--gray-3);
+    }
+
+    /* POST BODY */
+    .post-body { font-size: 1rem; color: #a0adb8; line-height: 1.9; }
+
+    .post-body p { margin-bottom: 1.75rem; }
+
+    .post-body h2 {
+      font-family: var(--serif); font-size: 1.6rem; font-weight: 700;
+      color: var(--white); margin: 3rem 0 1rem; line-height: 1.2;
+    }
+    .post-body h3 {
+      font-family: var(--serif); font-size: 1.2rem; font-weight: 700;
+      color: var(--gray-6); margin: 2.5rem 0 .75rem;
+    }
+
+    .post-body a { color: var(--white); text-decoration: underline; text-underline-offset: 3px; }
+    .post-body a:hover { color: var(--gray-5); }
+
+    .post-body strong { color: var(--white); font-weight: 500; }
+    .post-body em { font-style: italic; }
+
+    .post-body ul, .post-body ol {
+      margin: 0 0 1.75rem 1.5rem; color: #a0adb8;
+    }
+    .post-body li { margin-bottom: .4rem; line-height: 1.8; }
+
+    .post-body pre {
+      background: var(--gray-1); border: 1px solid var(--gray-2);
+      padding: 1.5rem; border-radius: 2px; overflow-x: auto;
+      margin: 2rem 0;
+    }
+    .post-body code {
+      font-family: var(--mono); font-size: .82rem; color: var(--gray-6); line-height: 1.7;
+    }
+    .post-body p code {
+      background: var(--gray-2); padding: .15em .45em;
+      border-radius: 2px; font-size: .82em; color: var(--gray-6);
+    }
+
+    .post-body blockquote {
+      border-left: 2px solid var(--gray-3);
+      padding: .5rem 0 .5rem 1.5rem;
+      margin: 2rem 0;
+      color: var(--gray-5); font-style: italic;
+    }
+
+    .post-body hr {
+      border: none; border-top: 1px solid var(--gray-2);
+      margin: 3rem 0;
+    }
+
+    /* POST FOOTER */
+    .post-footer {
+      margin-top: 5rem; padding-top: 3rem;
+      border-top: 1px solid var(--gray-3);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .post-footer-back {
+      font-family: var(--mono); font-size: .65rem; color: var(--gray-4);
+      letter-spacing: .12em; text-transform: uppercase; text-decoration: none;
+    }
+    .post-footer-back:hover { color: var(--white); }
+    .post-footer-label { font-family: var(--mono); font-size: .6rem; color: var(--gray-4); letter-spacing: .1em; }
+
+    footer { border-top: 1px solid var(--gray-3); padding: 1.5rem 3rem; display: flex; justify-content: space-between; align-items: center; }
+    footer p, footer a { font-family: var(--mono); font-size: .6rem; color: var(--gray-4); letter-spacing: .1em; text-decoration: none; }
+    footer a:hover { color: var(--white); }
+
+    @media (max-width: 860px) {
+      nav { padding: 1.2rem 1.5rem; }
+      .post-wrap { padding: 9rem 1.5rem 6rem; }
+    }
+    @media (max-width: 560px) { .nav-links { display: none; } }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="../index.html" class="nav-logo">HOME</a>
+  <ul class="nav-links">
+    <li><a href="../index.html#about">About</a></li>
+    <li><a href="../index.html#projects">Projects</a></li>
+    <li><a href="../index.html#education">Education</a></li>
+    <li><a href="../blog.html" class="active">Blog</a></li>
+    <li><a href="../index.html#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<div class="post-wrap">
+
+  <a href="../blog.html" class="post-back">← All Posts</a>
+
+  <div class="post-meta-top">
+    <span class="post-category">Tech &amp; Programming</span>
+    <!-- Change category to: Projects / Learning / Personal -->
+    <span class="post-date-top">12 Mar 2026</span>
+    <span class="post-readtime">5 min read</span>
+  </div>
+
+  <h1 class="post-title">how i got into tech</h1>
+  <p class="post-subtitle">A one or two sentence summary of what this post is about. This shows on the blog listing page as the excerpt.</p>
+
+  <!-- ── POST CONTENT ── -->
+  <!-- Write your post below. Use h2 for main sections, h3 for subsections. -->
+  <div class="post-body">
+
+    <p>
+      Start your post here. This is a regular paragraph. You can write naturally and use <strong>bold text</strong> for emphasis, <em>italics</em> for technical terms, and <a href="#">links</a> where relevant.
+    </p>
+
+    <h2>First Section Heading</h2>
+
+    <p>
+      Introduce the first idea. Keep paragraphs focused — one idea each. Your reader is probably a developer too, so you can be direct and skip unnecessary explanation.
+    </p>
+
+    <p>
+      Here's an example of inline code: <code>const x = require('express')</code>. And here's a code block:
+    </p>
+
+    <pre><code>// Example code block
+function greet(name) {
+  return `Hello, ${name}!`;
+}
+
+console.log(greet('World'));</code></pre>
+
+    <p>
+      Explain what the code does and why it matters to your point.
+    </p>
+
+    <h2>Second Section Heading</h2>
+
+    <p>
+      Continue building your argument. You can use a list when you have multiple discrete points:
+    </p>
+
+    <ul>
+      <li>First point — keep it to one sentence if possible</li>
+      <li>Second point — concrete and specific beats vague and general</li>
+      <li>Third point — end the list, get back to prose</li>
+    </ul>
+
+    <blockquote>
+      A blockquote works well for a key insight, a quote from documentation, or something you want to stand out from the main text.
+    </blockquote>
+
+    <h2>Conclusion</h2>
+
+    <p>
+      Wrap up your post. What should the reader take away? What would you do differently? What are you exploring next?
+    </p>
+
+    <p>
+      If you found this useful or have a different take, feel free to reach out — my email is in the footer.
+    </p>
+
+  </div>
+  <!-- ── END POST CONTENT ── -->
+
+  <div class="post-footer">
+    <a href="../blog.html" class="post-footer-back">← Back to Blog</a>
+    <span class="post-footer-label">Your Name · 2026</span>
+  </div>
+
+</div>
+
+<footer>
+  <p>© Your Name · 2025</p>
+  <a href="../index.html">← Back to Portfolio</a>
+</footer>
+
+</body>
+</html>
